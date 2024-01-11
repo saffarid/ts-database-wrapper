@@ -16,7 +16,10 @@ export class SQLiteConnection implements IDbConnection {
     this.dbPath = config.dbPath
   }
 
-  private getValueWithType = (value: any) => typeof value == 'string' ? `'${value}'` : value
+  private getValueWithType = (value: any) => {
+    if (value) return typeof value == 'string' ? `'${value}'` : value
+    else return 'NULL'
+  }
 
   open = async () => {
     if (this.db == undefined) {
@@ -69,9 +72,7 @@ export class SQLiteConnection implements IDbConnection {
   }
 
   update = async (tableName: string,
-                  obj: { [key: string]: any },
-                  compositePrimaryKey?: string[] | []
-  ): Promise<void> => {
+                  obj: { [key: string]: any }): Promise<void> => {
     const _obj = {...obj}
     delete _obj.id
     const request = `update \`${tableName}\` set ${Object.keys(_obj)
