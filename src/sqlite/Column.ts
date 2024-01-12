@@ -19,7 +19,8 @@ export class Column implements IColumn {
 
     descCreate = () => {
         if (this.isPrimaryKey){
-            return `${this.columnName} ${this.type} primary key`
+            if (this.type == "TEXT") return `${this.columnName} ${this.type} primary key`
+            else return `${this.columnName} ${this.type} primary key autoincrement`
         }
         return `${this.columnName} ${this.type}${this.isNotNull?' not null':''}${this.isUnique?' unique':''}`
     }
